@@ -33,6 +33,7 @@ This contains all of the utility classes such as exceptions and decorators.
 # noinspection PyUnresolvedReferences
 from pypika.dialects import (
     ClickHouseQuery,
+    DatabricksQuery,
     Dialects,
     MSSQLQuery,
     MySQLQuery,

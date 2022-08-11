@@ -60,6 +60,50 @@ class SnowflakeDropQueryBuilder(DropQueryBuilder):
         super().__init__(dialect=Dialects.SNOWFLAKE)
 
 
+class DatabricksQuery(Query):
+    """
+    Defines a query class for use with Databricks.
+    """
+
+    @classmethod
+    def _builder(cls, **kwargs: Any) -> "DatabricksQueryBuilder":
+        return SnowflakeQueryBuilder(**kwargs)
+
+    @classmethod
+    def create_table(cls, table: Union[str, Table]) -> "DatabricksCreateQueryBuilder":
+        return DatabricksCreateQueryBuilder().create_table(table)
+
+    @classmethod
+    def drop_table(cls, table: Union[str, Table]) -> "DatabricksDropQueryBuilder":
+        return DatabricksDropQueryBuilder().drop_table(table)
+
+
+class DatabricksQueryBuilder(QueryBuilder):
+    QUOTE_CHAR = None
+    ALIAS_QUOTE_CHAR = '"'
+    QUERY_ALIAS_QUOTE_CHAR = ''
+    QUERY_CLS = SnowflakeQuery
+
+    def __init__(self, **kwargs: Any) -> None:
+        super().__init__(dialect=Dialects.DATABRICKS, **kwargs)
+
+
+class DatabricksCreateQueryBuilder(CreateQueryBuilder):
+    QUOTE_CHAR = None
+    QUERY_CLS = DatabricksQuery
+
+    def __init__(self) -> None:
+        super().__init__(dialect=Dialects.DATABRICKS)
+
+
+class DatabricksDropQueryBuilder(DropQueryBuilder):
+    QUOTE_CHAR = None
+    QUERY_CLS = DatabricksQuery
+
+    def __init__(self) -> None:
+        super().__init__(dialect=Dialects.DATABRICKS)
+
+
 class MySQLQuery(Query):
     """
     Defines a query class for use with MySQL.
